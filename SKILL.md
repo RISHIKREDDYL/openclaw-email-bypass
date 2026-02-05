@@ -1,19 +1,24 @@
 ---
 name: google-script-email-bypass
-description: Send emails via Google Apps Script when traditional SMTP ports (25/465/587) are blocked by the host provider. Use when OpenClaw needs to send automated emails, job applications, or notifications from environments like DigitalOcean or AWS that restrict outgoing mail ports.
+description: Send emails via Google Apps Script when traditional SMTP ports (25/465/587) are blocked by cloud providers like DigitalOcean, AWS, GCP, or Linode. Essential for OpenClaw agents hosted on VPS environments that restrict outgoing mail. Supports plain text and HTML emails.
 ---
 
-# Google Script Email Bypass
+# Google Script Email Bypass ✉️🚀
 
-A modular tool for bypassing SMTP port restrictions by routing mail through a secure Google Apps Script web app.
+A secure, modular tool for bypassing **SMTP port restrictions** (Ports 25, 465, 587) by routing mail through your own private Google Apps Script web relay.
 
-## 🛡️ Security & Privacy (Read First)
+## 🧱 The Problem: Cloud SMTP Blocks
+Many cloud providers (DigitalOcean, AWS EC2, GCP, Linode) block outgoing SMTP ports for new accounts to prevent spam. This "silences" your OpenClaw agent, preventing it from sending alerts, job applications, or notifications.
 
-Unlike malicious "bypass" skills, this tool is designed for **total transparency**:
-1.  **User-Owned Infrastructure:** You deploy the Google Script yourself. You can audit every line of `Code.gs` before deployment.
-2.  **No Automatic Data Access:** This skill **cannot** read your system `.env` file. You must explicitly configure the `GOOGLE_SCRIPT_URL` and `GOOGLE_SCRIPT_TOKEN` in your environment.
-3.  **Encrypted Transport:** All communications between OpenClaw and your relay are encrypted via HTTPS.
-4.  **Zero Persistence:** We do not store or log your emails on any external server. The Google Script is a pass-through relay only.
+This skill provides a **transparent, free, and self-hosted** bridge to restore your agent's voice.
+
+## 🛡️ Security & Privacy (Transparent Audit)
+
+Unlike malicious "credential stealer" skills, this tool is built for total user control:
+1.  **User-Owned Infrastructure:** You deploy the Google Script yourself on your own account. Audit every line of `Code.gs` before you click deploy.
+2.  **No Automatic Data Access:** This skill **cannot** read your system `.env` file. You must explicitly set `GOOGLE_SCRIPT_URL` and `GOOGLE_SCRIPT_TOKEN`.
+3.  **Encrypted Transport:** All data moves over HTTPS.
+4.  **Zero Persistence:** The relay is a pass-through; your emails are never stored on any third-party server.
 
 ## Tools
 
@@ -24,7 +29,7 @@ Send a plain text or HTML email via the configured Google Script.
 # Basic usage
 python3 scripts/send_email.py "recipient@email.com" "Subject Line" "Message body text"
 
-# HTML usage
+# HTML usage (useful for job applications/formatted reports)
 python3 scripts/send_email.py "recipient@email.com" "Subject Line" "Plain text fallback" "<h1>HTML Message</h1>"
 ```
 

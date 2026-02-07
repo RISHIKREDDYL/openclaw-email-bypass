@@ -1,32 +1,61 @@
-# Google Apps Script Email Bypass Setup
+# Google Apps Script Email Bypass Setup Guide
 
-This skill allows OpenClaw to send emails even when SMTP ports (25, 465, 587) are blocked by your cloud provider (e.g., DigitalOcean).
+This guide will help you set up a private email relay using Google Apps Script. This is necessary for OpenClaw agents running on cloud providers (like DigitalOcean or AWS) where outgoing SMTP ports (25, 465, 587) are blocked.
 
-## 1. Google Apps Script Setup
+## Prerequisites
 
-1.  Go to [script.google.com](https://script.google.com) and create a **New Project**.
-2.  Paste the contents of `assets/Code.gs` into the editor.
-3.  Go to **Project Settings** (gear icon) -> **Script Properties**.
-4.  Add a property named `AUTH_TOKEN` and set it to a secure, random string.
-5.  Click **Deploy** -> **New Deployment**.
-6.  Select type: **Web App**.
-7.  Description: `OpenClaw Email Bypass`.
-8.  Execute as: **Me**.
-9.  Who has access: **Anyone** (Your `AUTH_TOKEN` will protect it).
-10. Copy the **Web App URL**.
+- A Google Account (to host the script).
+- Python 3.x installed on your OpenClaw host.
+- The `requests` library (`pip install requests`).
 
-## 2. OpenClaw Configuration
+## 1. Deploy the Google Apps Script Relay
 
-Set the following environment variables in your OpenClaw gateway environment:
+1.  **Open Google Apps Script:** Go to [script.google.com](https://script.google.com) and click **"New Project"**.
+2.  **Add the Code:** Copy the contents of `assets/Code.gs` from this repository and paste it into the script editor (replace any existing code).
+3.  **Set an Auth Token:**
+    - Click on the **Project Settings** (gear icon) on the left sidebar.
+    - Scroll down to **Script Properties**.
+    - Click **"Edit script properties"** -> **"Add property"**.
+    - Property: `AUTH_TOKEN`
+    - Value: `your-secret-token-here` (Use a long, random string).
+    - Click **"Save script properties"**.
+4.  **Deploy as Web App:**
+    - Click the **"Deploy"** button at the top right -> **"New deployment"**.
+    - Click the **"Select type"** (gear icon) -> **"Web App"**.
+    - **Description:** `OpenClaw Email Relay`.
+    - **Execute as:** `Me`.
+    - **Who has access:** `Anyone` (The `AUTH_TOKEN` protects it).
+    - Click **"Deploy"**.
+5.  **Copy the URL:** Copy the **Web App URL** provided. You will need this for your configuration.
 
-- `GOOGLE_SCRIPT_URL`: The URL you copied in the step above.
-- `GOOGLE_SCRIPT_TOKEN`: The secure string you set as `AUTH_TOKEN`.
+## 2. Configure Your Environment
 
-## 3. Usage
-
-The skill will automatically trigger when you need to send an email and SMTP is unavailable.
-Alternatively, call the script directly:
+You need to tell the Python script where your relay is and what token to use. Set these environment variables in your system or your OpenClaw `.env` file:
 
 ```bash
-python3 scripts/send_email.py "target@example.com" "Hello from OpenClaw" "This is a test message."
+# The URL you copied from the Google Script deployment
+export GOOGLE_SCRIPT_URL="https://script.google.com/macros/s/.../exec"
+
+# The AUTH_TOKEN you set in Script Properties
+export GOOGLE_SCRIPT_TOKEN="your-secret-token-here"
 ```
+
+## 3. Installation
+
+If you are using this as an OpenClaw skill, the files should already be in your workspace. If you are setting it up manually:
+
+```bash
+git clone https://github.com/RISHIKREDDYL/openclaw-email-bypass.git
+cd openclaw-email-bypass
+pip install requests
+```
+
+## 4. Verification
+
+Test the relay by sending a test email:
+
+```bash
+python3 scripts/send_email.py "your-email@example.com" "Test Subject" "This is a test message from my OpenClaw relay!"
+```
+
+If successful, you will see `Email sent successfully to your-email@example.com`.

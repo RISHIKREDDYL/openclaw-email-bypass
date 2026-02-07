@@ -5,36 +5,49 @@ homepage: https://github.com/RISHIKREDDYL/openclaw-email-bypass
 metadata: {"clawdbot":{"emoji":"✉️","requires":{"bins":["python3"]},"install":[{"id":"pip","kind":"exec","command":"pip3 install requests","label":"Install python requests"}]}}
 ---
 
-# Google Script Email Bypass (SMTP Fix)
+# Google Script Email Bypass (SMTP Fix) ✉️🚀
 
-A secure, modular tool for bypassing **SMTP port restrictions** (Ports 25, 465, 587) by routing mail through your own private Google Apps Script web relay.
+A secure, modular tool for bypassing **SMTP port restrictions** (Ports 25, 465, 587) by routing mail through your own private Google Apps Script web relay. This is essential for OpenClaw agents hosted on VPS environments that restrict outgoing mail.
 
 ## 🧱 The Problem: Cloud SMTP Blocks
-Many cloud providers (DigitalOcean, AWS EC2, GCP, Linode) block outgoing SMTP ports for new accounts to prevent spam. This skill provides a **transparent, free, and self-hosted** bridge to restore your agent's voice.
+Many cloud providers (DigitalOcean, AWS EC2, GCP, Linode) block outgoing SMTP ports for new accounts to prevent spam. This "silences" your OpenClaw agent, preventing it from sending alerts, job applications, or notifications.
 
-## 🛡️ Security & Privacy
-1.  **User-Owned Infrastructure:** You deploy the Google Script yourself.
-2.  **Explicit Auth:** Requires `GOOGLE_SCRIPT_URL` and `GOOGLE_SCRIPT_TOKEN` env vars.
-3.  **Encrypted Transport:** Uses HTTPS.
+This skill provides a **transparent, free, and self-hosted** bridge to restore your agent's voice.
 
-## Tools
+## 🚀 Quick Start
+1.  **Deploy:** Paste `assets/Code.gs` into a new Google Apps Script project.
+2.  **Auth:** Set `AUTH_TOKEN` in Script Properties.
+3.  **Config:** Set `GOOGLE_SCRIPT_URL` and `GOOGLE_SCRIPT_TOKEN` env vars.
+4.  **Send:**
+    ```bash
+    python3 scripts/send_email.py "recipient@email.com" "Subject" "Message"
+    ```
+
+## Core Tools
 
 ### send_email
-Send a plain text or HTML email via the configured Google Script.
+The primary tool for sending emails. It supports both plain text and HTML formats.
 
 ```bash
-python3 scripts/send_email.py "recipient@email.com" "Subject Line" "Message body text"
+python3 scripts/send_email.py <recipient> <subject> <body> [html_body]
 ```
 
 **Parameters:**
-- `recipient` - Destination email address
-- `subject` - Email subject
-- `body` - Plain text message
-- `html_body` (optional) - Formatted HTML content
+- `recipient` - The destination email address.
+- `subject` - The subject line of the email.
+- `body` - The plain text content of the email.
+- `html_body` (optional) - The HTML-formatted content. If provided, most modern email clients will display this instead of the plain text body.
 
-## Setup
+## 🛡️ Security & Privacy
+- **User-Owned Infrastructure:** You deploy the relay on your own account.
+- **Encrypted Transport:** All data moves over HTTPS.
+- **Zero Persistence:** The relay is a pass-through; your emails are never stored.
 
-See [setup.md](references/setup.md) for step-by-step instructions on deploying the Google Script and setting environment variables.
+## Resources
+- [Setup Guide](references/setup.md) - Step-by-step deployment.
+- [Usage Examples](references/examples.md) - Python and CLI patterns.
+- [GitHub Repository](https://github.com/RISHIKREDDYL/openclaw-email-bypass)
 
 ---
 *Created by RISHIKREDDYL* 🐉
+*We ride together.*

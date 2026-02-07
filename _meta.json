@@ -1,7 +1,7 @@
 {
-  "name": "google-script-email-bypass",
-  "slug": "google-script-email-bypass",
+  "name": "OpenClaw Email Bypass",
+  "slug": "openclaw-email-bypass",
   "version": "1.0.0",
-  "description": "Send emails via Google Apps Script when traditional SMTP ports are blocked.",
+  "description": "Bypass SMTP port blocks by routing mail through a private Google Apps Script relay. (Requires scripts from GitHub repo)",
   "homepage": "https://github.com/RISHIKREDDYL/openclaw-email-bypass"
 }
